@@ -1,10 +1,6 @@
 <template>
   <div>
-    <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="item in lunbotuList" :key="item.id">
-          <img :src="item.img" alt="">
-      </mt-swipe-item>
-    </mt-swipe>
+    <swiper :lunbotuList="lunbotuList" :isfull="true"></swiper>
     <ul class="mui-table-view mui-grid-view mui-grid-9">
 		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newslist">
 		                    <img src="../../images/menu1.png" alt="">
@@ -12,7 +8,7 @@
 		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/photolist">
 		                   <img src="../../images/menu2.png" alt="">
 		                    <div class="mui-media-body">图片分享</div></router-link></li>
-		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="#">
+		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/goodslist">
 		                    <img src="../../images/menu3.png" alt="">
 		                    <div class="mui-media-body">商品购买</div></router-link></li>
 		            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="#">
@@ -30,6 +26,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import swiper from '../subcomponents/swiper.vue'
 export default {
     data(){
         return {
@@ -40,37 +37,24 @@ export default {
         this.getLunbotu()
     },
     methods:{
-        getLunbotu(){this.axios.get('/api/getLunbo').then(result=>{
-            if(result.data.status===0){
+        getLunbotu(){
+        this.axios.get('/api/getLunbo')
+        .then(result=>{
                 this.lunbotuList=result.data.message
-            }else{
-                Toast('轮播图加载失败...');
-            }
+        })
+        .catch(err =>{
+            Toast('轮播图加载失败...')
+        })
         }
-
-        )}
-        
+    },
+    components:{
+      swiper
     }
-};
+}
 </script>
 
 <style lang="scss"  scoped>
-.mint-swipe {
-  height: 200px;
-}
-.mint-swipe-items-wrap>div:nth-child(1) {
-  background-color: red;
-}
-.mint-swipe-items-wrap>div:nth-child(2) {
-  background-color: green;
-}
-.mint-swipe-items-wrap>div:nth-child(3) {
-  background-color: blue;
-}
-img{
-    width: 100%;
-    height: 100%;
-}
+
 .mui-grid-view.mui-grid-9{
   background-color: #ffffff;
   border:none;

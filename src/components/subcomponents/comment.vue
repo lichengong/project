@@ -30,15 +30,13 @@ export default {
   },
   methods: {
     getComments() {
-      this.axios
-        .get("/api/getcomments/" + this.id + "?pageindex=" + this.pageIndex)
+      this.axios.get("/api/getcomments/" + this.id + "?pageindex=" + this.pageIndex)
         .then(result => {
-          if (result.data.status === 0) {
-            this.comments = this.comments.concat(result.data.message);
-          } else {
-            Toast("获取评论失败！");
-          }
-        });
+            this.comments = this.comments.concat(result.data.message);      
+        })
+        .catch(err =>{
+            Toast("获取评论失败！")
+        })
     },
     getMore() {
       this.pageIndex++;
@@ -53,18 +51,17 @@ export default {
           content: this.msg.trim()
         })
         .then(result => {
-          if (result.data.status === 0) {
             var cmt = {
               user_name: "匿名用户",
               add_time: Date.now(),
               content: this.msg.trim()
             }
             this.comments.unshift(cmt)
-            this.msg=""
-          } else {
+            this.msg=""          
+        })
+        .catch(err => {
             Toast("评论失败！");
-          }
-        });
+        })
     }
   },
   props: ["id"]

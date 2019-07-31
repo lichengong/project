@@ -24,15 +24,15 @@ export default {
         this.getnewsinfo()
     },
     methods:{
-        getnewsinfo(){this.axios.get('/api/getnew/'+this.id).then(result=>{
-            if(result.data.status===0){
+        getnewsinfo(){
+            this.axios.get('/api/getnew/'+this.id)
+            .then(result=>{
                 this.newsinfo=result.data.message[0]
-            }else{
-                Toast('获取图文资讯详情失败！');
-            }
-        }
-
-        )}
+            })
+            .catch(err => {
+                 Toast('获取图文资讯详情失败！')
+            })
+    }
     },
     components:{
         comment
